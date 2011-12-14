@@ -15,21 +15,21 @@ It prints a CSV of contacts defined and referenced in all .group files contained
 require_once "WindowsContactGroup.php";
 
 header('Content-type: text/csv');
-print "Name,Email\n";
+echo 'Name,Email',PHP_EOL;
 foreach(scandir('groups') as $filename) {
 	if ($filename == '.' || $filename == '..' || pathinfo($filename, PATHINFO_EXTENSION) != 'group') continue;
 
 	$group = new WindowsContactGroup('groups'.DIRECTORY_SEPARATOR.$filename);
 	$embeddedContacts = $group->getEmbeddedContacts();
-	foreach($embeddedContacts as $contact) print $contact['name'].','.$contact['email']."\n";
+	foreach($embeddedContacts as $contact) echo $contact['name'],',',$contact['email'],PHP_EOL;
 
 	$files = $group->getLinkedContactFiles();
 	foreach($files as $file) {
 		if (pathinfo($file, PATHINFO_EXTENSION) != 'contact') continue;
 
-		$file = substr($file, strrpos($file, '\\') + 1);// isolate filename
+		$file = substr($file, strrpos($file, '\\') + 1);// isolate filename - always going to be Windows format
 		$contact = new WindowsContact('contacts'.DIRECTORY_SEPARATOR.$file);
-		print $contact->getName().','.$contact->getEmail()."\n";
+		echo $contact->getName(),',',$contact->getEmail(),PHP_EOL;
 	}
 }
 ?>

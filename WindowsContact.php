@@ -21,7 +21,7 @@ class WindowsContact {
 	function __get($var) {
 		$xpath = $this->xml->xpath("//c:$var");
 		$arr = array();
-		while(list( , $node) = each($xpath)) $arr[] =  "".$node;
+		while(list( , $node) = each($xpath)) $arr[] =  (string)$node;
 		return $arr;
 	}
 
